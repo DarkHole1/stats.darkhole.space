@@ -1,0 +1,18 @@
+- const minutes2parts = minutes => [minutes % 60, Math.floor(minutes / 60) % 24, Math.floor(minutes / 60 / 24)]
+- const names = ['минут', 'часов', 'дней']
+- const minutes2readable = minutes => minutes2parts(minutes).every(e => e == 0) ? '0 минут' : minutes2parts(minutes).flatMap((e, i) => e <= 0 ? [] : [`${e} ${names[i]}`]).reverse().join(' ')
+
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="styles.css")
+        title Моя статистика
+    body 
+        .wrapper 
+            h1 Список запланированного
+            p Изначально: #{minutes2readable(initial)}
+            p Расширение вселенной: #{minutes2readable(expansion)}
+            p Просмотрено: #{minutes2readable(watched)} / #{(watched * 100 / (initial + expansion)).toFixed(2)}%
+            p Осталось: #{minutes2readable(left)} / #{(left * 100 / (initial + expansion)).toFixed(2)}%
