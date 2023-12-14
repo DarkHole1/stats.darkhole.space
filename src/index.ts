@@ -25,7 +25,7 @@ getData().then(d => {
 
     app.use(express.static(resolve(__dirname, '../static')))
 
-    cron.schedule('0 0 * * * *', async () => {
+    cron.schedule('0 0 0,12 * * *', async () => {
         log('Getting data')
         data = await getData()
         history.push({
