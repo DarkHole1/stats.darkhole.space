@@ -25,12 +25,14 @@ getData().then(d => {
 
     app.use(express.static(resolve(__dirname, '../static')))
 
-    cron.schedule('0 0 0,12 * * *', async () => {
+    cron.schedule('0 0 * * * *', async () => {
+        log('Getting data')
         data = await getData()
         history.push({
             date: new Date(),
             ...data
         })
+        log('Adding data to history')
         await writeModel(history, 'data/planned.json')
     })
 
