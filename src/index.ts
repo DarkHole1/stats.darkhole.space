@@ -9,7 +9,8 @@ import { PlannedArray } from './models/planned'
 
 const log = debug('app:main')
 
-const history = readModelSync(PlannedArray, 'data/planned.json')
+const PLANNED_PATH = resolve(__dirname, '../data/planned.json')
+const history = readModelSync(PlannedArray, PLANNED_PATH)
 
 getData().then(d => {
     log('Initial data fetched')
@@ -23,6 +24,10 @@ getData().then(d => {
         return res.render('main', data)
     })
 
+    app.get('/api/planned.json', (_, res) => {
+        return res.sendFile(PLANNED_PATH)
+    })
+
     app.use(express.static(resolve(__dirname, '../static')))
 
     cron.schedule('0 0 0,12 * * *', async () => {
@@ -33,7 +38,7 @@ getData().then(d => {
             ...data
         })
         log('Adding data to history')
-        await writeModel(history, 'data/planned.json')
+        await writeModel(history, PLANNED_PATH)
     })
 
     app.listen(8089, () => {
